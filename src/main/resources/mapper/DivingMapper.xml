@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<mapper xmlns="http://mybatis.org/schema/mybatis-mapper">
+<mapper namespace="kr.co.fiven.sdadivingapi.mapper.DivingMapper" xmlns="http://mybatis.org/schema/mybatis-mapper">
+
+    <select id="getPlayerList" >
+        SELECT
+        FROM
+        WHERE
+    </select>
 </mapper>

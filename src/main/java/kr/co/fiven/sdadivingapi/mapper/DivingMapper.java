@@ -1,2 +1,11 @@
-package kr.co.fiven.sdadivingapi.mapper;public interface DivingMapper {
+package kr.co.fiven.sdadivingapi.mapper;
+
+import kr.co.fiven.sdadivingapi.vo.Player;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface DivingMapper {
+
+    public Player getPlayerList();
+
 }
