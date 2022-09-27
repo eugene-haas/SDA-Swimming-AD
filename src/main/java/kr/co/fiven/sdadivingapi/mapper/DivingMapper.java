@@ -1,1 +1,2 @@
-package kr.co.fiven.sdadivingapi.mapper;
+package kr.co.fiven.sdadivingapi.mapper;public interface DivingMapper {
+}
