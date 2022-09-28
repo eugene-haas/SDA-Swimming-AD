@@ -1,7 +1,7 @@
 package kr.co.fiven.sdadivingapi.service;
 
 
-import kr.co.fiven.sdadivingapi.mapper.DivingMapper;
+import kr.co.fiven.sdadivingapi.mapper.diviging.DivingMapper;
 import kr.co.fiven.sdadivingapi.vo.Player;
 import kr.co.fiven.sdadivingapi.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
