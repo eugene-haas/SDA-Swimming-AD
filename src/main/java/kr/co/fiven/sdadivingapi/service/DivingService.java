@@ -2,7 +2,7 @@ package kr.co.fiven.sdadivingapi.service;
 
 
 import kr.co.fiven.sdadivingapi.mapper.diviging.DivingMapper;
-import kr.co.fiven.sdadivingapi.vo.Player;
+import kr.co.fiven.sdadivingapi.vo.PlayerSettingList;
 import kr.co.fiven.sdadivingapi.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,10 @@ public class DivingService {
     private DivingMapper DivingMapper;
 
 
-    public Response<Player> getPlayerList() {
-        Response<Player> res = new Response<>();
+    public Response<PlayerSettingList> getPlayerList(int gameLevelIdx) {
+        Response<PlayerSettingList> res = new Response<>();
 
-        Player player =  DivingMapper.getPlayerList();
+        PlayerSettingList player =  DivingMapper.getPlayerList(gameLevelIdx);
 
         return res;
 

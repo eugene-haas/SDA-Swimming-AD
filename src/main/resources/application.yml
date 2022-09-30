@@ -22,9 +22,14 @@ server:
       restart:
         enabled: true
 
-  mybatis:
-    mapper-locations: classpath:mapper/**/*.xml
-
+mybatis:
+  configuration:
+    multiple-result-sets-enabled: false
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    jdbc-type-for-null: varchar
+    default-fetch-size: 500
+  mapper-locations: mapper/**/*Mapper.xml
 ---
 spring:
   config :
@@ -32,7 +37,7 @@ spring:
         on-profile: local
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver:172.30.1.7;databaseName=SD_Pub
+    url: jdbc:sqlserver:49.247.9.88;databaseName=KS_Swimming_DEv
     username: splog_ekS1dlP9djT0fl
     password: splog_ekS1dlP9djT0fl
 ---
@@ -42,7 +47,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver:172.30.1.7;databaseName=SD_Pub
+    url: jdbc:sqlserver:49.247.9.88;databaseName=KS_Swimming_DEv
     username: splog_ekS1dlP9djT0fl
     password: splog_ekS1dlP9djT0fl
 ---

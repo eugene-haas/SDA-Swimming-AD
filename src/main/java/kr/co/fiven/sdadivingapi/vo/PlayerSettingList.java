@@ -1,0 +1,70 @@
+package kr.co.fiven.sdadivingapi.vo;
+
+import lombok.Data;
+
+@Data
+public class PlayerSettingList {
+    private int gameMemberIDX;
+    private String player1;
+    private String player2;
+    private String gametime;
+    private String gametimeend;
+    private String place;
+    private Long PlayerIDX;
+    private String userName;
+    private String gbIDX;
+    private String levelno;
+    private String CDA;
+    private String CDANM;
+    private String CDB;
+    private String CDBNM;
+    private String CDC;
+    private String CDCNM;
+    private int tryoutgroupno;
+    private int tryoutsortNo;
+    private String tryoutresult ;
+    private int roundNo;
+    private int SortNo;
+    private int stateno;
+    private String gameResult;
+    private String Team;
+    private String TeamNm;
+    private String Sex;
+    private int requestIDX;
+    private String bestscorea;
+    private int bestOrder;
+    private String bestCDBNM;
+    private int bestidx;
+    private String bestdate;
+    private String besttitle;
+    private String bestgamecode;
+    private String bestArea;
+    private String startType;
+    private String ksportsno;
+    private String kno;
+    private String sidonm;
+    private int tryouttotalorder;
+    private String tryoutOrder;
+    private String gameOrder;
+    private Long RgameLevelidx;
+    private Long gametitleidx;
+    private int gubunam;
+    private String tryoutgamedate;
+    private String tryoutgamestarttime;
+    private String gameno;
+    private int tryoutgameingS;
+    private Long gbidx;
+    private String cda;
+    private String cdc;
+    private String G1firstRC;
+    private String G1korSin;
+    private String G1gameSin;
+    private String G1firstmemberSin;
+    private String G2firstRC;
+    private String G2KorSin;
+    private String G2gameSin;
+    private String G2firstmemberSin;
+    private String itgubun;
+    private int setCodeCount;
+
+}

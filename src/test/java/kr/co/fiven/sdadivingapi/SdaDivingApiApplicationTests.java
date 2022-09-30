@@ -13,6 +13,7 @@ class SdaDivingApiApplicationTests {
     @Test
     void contextLoads() {
         System.out.println("개발 환경 : " + environment.getProperty("spring.profiles.active"));
+        System.out.println("개발 환경 : " + environment.getProperty("server.port"));
 
     }
 
