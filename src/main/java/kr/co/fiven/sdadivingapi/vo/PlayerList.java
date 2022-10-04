@@ -3,7 +3,7 @@ package kr.co.fiven.sdadivingapi.vo;
 import lombok.Data;
 
 @Data
-public class PlayerSettingList {
+public class PlayerList {
     private int gameMemberIDX;
     private String player1;
     private String player2;

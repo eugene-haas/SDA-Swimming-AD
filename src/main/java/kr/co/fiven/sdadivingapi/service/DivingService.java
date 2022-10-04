@@ -1,12 +1,19 @@
 package kr.co.fiven.sdadivingapi.service;
 
 
-import kr.co.fiven.sdadivingapi.mapper.diviging.DivingMapper;
-import kr.co.fiven.sdadivingapi.vo.PlayerSettingList;
+import kr.co.fiven.sdadivingapi.mapper.DivingMapper;
+import kr.co.fiven.sdadivingapi.vo.PlayerList;
 import kr.co.fiven.sdadivingapi.vo.Response;
+import kr.co.fiven.sdadivingapi.vo.TeamPlayerList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
 @Service
 public class DivingService {
 
@@ -14,12 +21,86 @@ public class DivingService {
     private DivingMapper DivingMapper;
 
 
-    public Response<PlayerSettingList> getPlayerList(int gameLevelIdx) {
-        Response<PlayerSettingList> res = new Response<>();
+    public Response<List> getPlayerList(Long gameLevelIdx) {
+        Response<List> res = new Response<>();
+        List<PlayerList> playerList = null;
 
-        PlayerSettingList player =  DivingMapper.getPlayerList(gameLevelIdx);
+        try {
+            log.info("gameLevelIdx : {}", gameLevelIdx);
+            playerList = DivingMapper.getPlayerList(gameLevelIdx);
 
+            for (PlayerList p : playerList) {
+                log.info("player list : {}", p);
+            }
+            res.setRstCode(200);
+
+            if(playerList.size() == 0) {
+                res.setRstMessage("조회 결과 없음");
+            } else if(playerList.size() > 0) {
+                res.setResult(playerList);
+            }
+        } catch (Exception e) {
+            log.error("message : {}", e.getMessage() + "\n e : {}", e);
+            res.setRstMessage("오류 발생 : " + e.getMessage());
+        }
         return res;
-
     }
+
+    public Response<List> getTeamPlayerList(Long gameMemberIdx) {
+        Response<List> res = new Response<>();
+        List<TeamPlayerList> teamPlayerList = null;
+
+        try {
+            teamPlayerList = DivingMapper.getTeamPlayerList(gameMemberIdx);
+
+            for (TeamPlayerList p : teamPlayerList) {
+                log.info("player list : {}", p);
+            }
+            res.setRstCode(200);
+
+            if(teamPlayerList.size() == 0) {
+                res.setRstMessage("조회 결과 없음");
+            } else if(teamPlayerList.size() > 0) {
+               res.setResult(teamPlayerList);
+            }
+        } catch (Exception e) {
+            log.error("message : {}", e.getMessage() + "\n e : {}", e);
+            res.setRstMessage("오류 발생 : " + e.getMessage());
+        }
+        return res;
+    }
+
+    @Transactional
+    public Response<List> setPlayerList(Map<String, Integer> params) {
+        Response<List> res = new Response<>();
+
+        try {
+            int result = DivingMapper.setPlayerList(params);
+            res.setRstCode(200);
+
+            if(result > 0) {
+                res.setRstMessage("출전 선수가 변경되었습니다");
+            } else {
+                res.setRstMessage("선수 변경에 실패했습니다");
+            }
+        } catch (Exception e) {
+            log.error("message : {}", e.getMessage() + "\n e : {}", e);
+            res.setRstMessage("오류 발생 : " + e.getMessage());
+        }
+        return res;
+    }
+
+
+//    public Response<> x() {
+//        Response<List> res = new Response<>();
+//
+//        try {
+//
+//        } catch (Exception e) {
+//            log.error("message : {}", e.getMessage() + "\n e : {}", e);
+//            res.setRstMessage("오류 발생 : " + e.getMessage());
+//        }
+//
+//        return res;
+//    }
 }

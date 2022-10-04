@@ -1,14 +1,15 @@
 package kr.co.fiven.sdadivingapi.controller;
 
 import kr.co.fiven.sdadivingapi.service.DivingService;
-import kr.co.fiven.sdadivingapi.vo.PlayerSettingList;
 import kr.co.fiven.sdadivingapi.vo.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class DivingController {
@@ -28,13 +29,31 @@ public class DivingController {
     }
 
     @GetMapping("/player/list")
-    public Response<PlayerSettingList> getPlayerList(@RequestParam int gameLevelIdx) {
-        Response<PlayerSettingList> res = new Response<>();
-
+    public Response<List> getPlayerList(@RequestParam Long gameLevelIdx) {
+        Response<List> res = new Response<>();
         res = DivingService.getPlayerList(gameLevelIdx);
 
         return res;
     }
+
+    @GetMapping("/player/team/list")
+    public Response<List> getTeamPlayerList(@RequestParam Long gameMemberIdx) {
+        Response<List> res = new Response<>();
+        res = DivingService.getTeamPlayerList(gameMemberIdx);
+
+        return res;
+    }
+
+    @PostMapping("/player/switch")
+    public Response<List> setPlayerList(@RequestBody Map<String, Integer> params) {
+        Response<List> res = new Response<>();
+        res = DivingService.setPlayerList(params);
+
+        return res;
+    }
+
+
+
 
 
 }

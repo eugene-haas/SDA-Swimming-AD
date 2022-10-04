@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper
+3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="kr.co.fiven.sdadivingapi.mapper.DivingMapper">
+
+    <select id="getPlayerList" resultType="PlayerList" >
+        SELECT a.gameMemberIDX,
+            CASE
+                WHEN (SELECT gameMemberIDX  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 1) > 0
+                THEN (SELECT username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 1)
+                ELSE (SELECT top 1 username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 0 ORDER BY partnerIDX)
+            END AS player1,
+            CASE
+                WHEN (SELECT gameMemberIDX  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 2) > 0
+                THEN (SELECT username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 2)
+                WHEN (SELECT count(*)  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected in (1,2) ) = 0
+                THEN (SELECT c.username FROM (SELECT ROW_NUMBER() OVER (ORDER BY gameMemberIDX ASC) AS idx, username FROM SD_gameMember_partner
+                WHERE gamememberidx = a.gamememberidx AND selected = 0) AS c WHERE c.idx = 2)
+                ELSE (SELECT top 1 username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 0 ORDER BY partnerIDX)
+            END AS player2,
+            a.gubun,a.gametime,a.gametimeend,a.place,a.PlayerIDX,a.userName,a.gbIDX,a.levelno,a.CDA,a.CDANM,a.CDB,a.CDBNM,a.CDC,a.CDCNM,a.tryoutgroupno,
+            a.tryoutsortNo,a.tryoutstateno,a.tryoutresult,a.roundNo,a.SortNo,a.stateno,a.gameResult,a.Team,a.TeamNm,a.userClass,a.Sex,a.requestIDX,a.bestscore,
+            a.bestOrder,a.bestCDBNM,a.bestidx,a.bestdate,a.besttitle,a.bestgamecode,a.bestArea,a.startType,a.ksportsno,a.kno,a.sidonm,
+            CAST(a.tryouttotalorder AS int) AS tryouttotalorder ,a.tryoutOrder,a.gameOrder
+            ,b.RgameLevelidx,b.gametitleidx, b.gubunam, b.tryoutgamedate, b.tryoutgamestarttime, b.gameno, b.tryoutgameingS, b.gbidx, b.cda, b.cdc
+            ,G1firstRC,G1korSin,G1gameSin,G1firstmemberSin,G2firstRC,G2KorSin,G2gameSin,G2firstmemberSin,a.itgubun
+            ,(SELECT count(*)  FROM sd_gameMember_roundRecord WHERE midx = a.gamememberidx AND gamecodeseq > 0 ) AS setCodeCount
+        FROM SD_gameMember AS a
+        INNER JOIN tblRGameLevel AS b
+        ON a.gametitleidx = b.gametitleidx AND a.gbidx = b.gbidx AND a.delYN = 'N'
+        WHERE b.delyn = 'N' AND a.gubun in (1,3) AND b.RgameLevelidx = #{gameLevelIdx}
+        ORDER BY a.tryoutsortno ASC
+    </select>
+
+    <select id="getTeamPlayerList" resultType="TeamPlayerList">
+        SELECT
+            a.partnerIDX, a.userName, b.Birthday, b.Sex, b.CDBNM, b.userClass
+        FROM
+            sd_gameMember_partner a, tblPlayer b
+        WHERE
+            a.gameMemberIDX = #{gameMemberIdx} AND selected = 0 AND b.PlayerIDX = a.PlayerIDX
+        ORDER BY
+            a.partnerIDX ASC
+    </select>
+
+    <update id="setPlayerList" parameterType="map">
+        UPDATE
+            sd_gameMember_partner
+        SET
+            selected = #{sort} WHERE partnerIDX = #{partnerIDX};
+    </update>
+</mapper>
