@@ -44,6 +44,13 @@ public class DivingController {
         return res;
     }
 
+    /**
+     * parmas {
+     * sort : int : 몇번째 선수인지
+     * gameMemberIdx : 바꾸는 학교 idx
+     * partnerIDX : 변경 선수의 idx
+     * }
+     */
     @PostMapping("/player/switch")
     public Response<List> setPlayerList(@RequestBody Map<String, Integer> params) {
         Response<List> res = new Response<>();

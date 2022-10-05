@@ -9,10 +9,9 @@ import java.util.Map;
 
 @Mapper
 public interface DivingMapper {
-
     public List<PlayerList> getPlayerList(Long gameLevelIdx);
-
     List<TeamPlayerList> getTeamPlayerList(Long gameMemberIdx);
-
+    Long getPartnerIdx(Map<String, Integer> params);
     int setPlayerList(Map<String, Integer> params);
+    void setPlayerSelected(Long originIdx);
 }

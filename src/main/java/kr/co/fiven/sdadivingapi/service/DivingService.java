@@ -26,11 +26,11 @@ public class DivingService {
         List<PlayerList> playerList = null;
 
         try {
-            log.info("gameLevelIdx : {}", gameLevelIdx);
+            log.info("[getPlayerList] gameLevelIdx : {}", gameLevelIdx);
             playerList = DivingMapper.getPlayerList(gameLevelIdx);
 
             for (PlayerList p : playerList) {
-                log.info("player list : {}", p);
+                log.info("[getPlayerList] player list : {}", p);
             }
             res.setRstCode(200);
 
@@ -54,7 +54,7 @@ public class DivingService {
             teamPlayerList = DivingMapper.getTeamPlayerList(gameMemberIdx);
 
             for (TeamPlayerList p : teamPlayerList) {
-                log.info("player list : {}", p);
+                log.info("[getTeamPlayerList] player team list : {}", p);
             }
             res.setRstCode(200);
 
@@ -73,9 +73,19 @@ public class DivingService {
     @Transactional
     public Response<List> setPlayerList(Map<String, Integer> params) {
         Response<List> res = new Response<>();
+        int result = 0;
 
         try {
-            int result = DivingMapper.setPlayerList(params);
+            //기존에 선택 된 선수가 있는지 확인
+            Long originIdx = DivingMapper.getPartnerIdx(params);
+            log.info("[setPlayerList] originIdx : {}", originIdx);
+
+            //선택된 선수가 있다면 제거하고 새로운 선수를 등록
+            if(originIdx != null || originIdx > 0) {
+                DivingMapper.setPlayerSelected(originIdx);
+            }
+            result = DivingMapper.setPlayerList(params);
+
             res.setRstCode(200);
 
             if(result > 0) {

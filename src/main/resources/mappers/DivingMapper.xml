@@ -45,10 +45,32 @@
             a.partnerIDX ASC
     </select>
 
+    <select id="getPartnerIdx" parameterType="map" resultType="long">
+        SELECT
+            partnerIDX
+        FROM
+            sd_gameMember_partner
+        WHERE
+            gameMemberIDX = #{gameMemberIDX} AND selected = #{sort}
+    </select>
+
+    <update id="setPlayerSelected">
+        UPDATE
+            sd_gameMember_partner
+        SET
+            selected = 0
+        WHERE
+            partnerIDX = #{partnerIDX}
+    </update>
+
     <update id="setPlayerList" parameterType="map">
         UPDATE
             sd_gameMember_partner
         SET
-            selected = #{sort} WHERE partnerIDX = #{partnerIDX};
+            selected = #{sort}
+        WHERE
+            partnerIDX = #{partnerIDX};
     </update>
+
+
 </mapper>

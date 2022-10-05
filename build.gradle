@@ -34,6 +34,9 @@ dependencies {
     //sql server jdbc
     implementation 'com.microsoft.sqlserver:mssql-jdbc:11.2.1.jre11'
 
+    //logging
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
