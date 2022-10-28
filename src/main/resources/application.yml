@@ -4,7 +4,7 @@ spring:
       local : "local"
       dev : "dev"
       prod : "prod"
-    active : dev
+    active : prod
 
 server:
   port: 8083
