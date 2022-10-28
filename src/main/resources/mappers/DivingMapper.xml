@@ -6,27 +6,41 @@
 <mapper namespace="kr.co.fiven.sdadivingapi.mapper.DivingMapper">
 
     <select id="getPlayerList" resultType="PlayerList" >
-        SELECT a.gameMemberIDX,
-            CASE
-                WHEN (SELECT gameMemberIDX  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 1) > 0
-                THEN (SELECT username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 1)
-                ELSE (SELECT top 1 username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 0 ORDER BY partnerIDX)
-            END AS player1,
-            CASE
-                WHEN (SELECT gameMemberIDX  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 2) > 0
-                THEN (SELECT username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 2)
-                WHEN (SELECT count(*)  FROM sd_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected in (1,2) ) = 0
-                THEN (SELECT c.username FROM (SELECT ROW_NUMBER() OVER (ORDER BY gameMemberIDX ASC) AS idx, username FROM SD_gameMember_partner
-                WHERE gamememberidx = a.gamememberidx AND selected = 0) AS c WHERE c.idx = 2)
-                ELSE (SELECT top 1 username FROM SD_gameMember_partner WHERE gamememberidx = a.gamememberidx AND selected = 0 ORDER BY partnerIDX)
-            END AS player2,
-            a.gubun,a.gametime,a.gametimeend,a.place,a.PlayerIDX,a.userName,a.gbIDX,a.levelno,a.CDA,a.CDANM,a.CDB,a.CDBNM,a.CDC,a.CDCNM,a.tryoutgroupno,
+        SELECT a.gameMemberIDX, a.gubun,a.gametime,a.gametimeend,a.place,a.PlayerIDX,a.userName,a.gbIDX,a.levelno,a.CDA,a.CDANM,a.CDB,a.CDBNM,a.CDC,a.CDCNM,a.tryoutgroupno,
             a.tryoutsortNo,a.tryoutstateno,a.tryoutresult,a.roundNo,a.SortNo,a.stateno,a.gameResult,a.Team,a.TeamNm,a.userClass,a.Sex,a.requestIDX,a.bestscore,
             a.bestOrder,a.bestCDBNM,a.bestidx,a.bestdate,a.besttitle,a.bestgamecode,a.bestArea,a.startType,a.ksportsno,a.kno,a.sidonm,
             CAST(a.tryouttotalorder AS int) AS tryouttotalorder ,a.tryoutOrder,a.gameOrder
-            ,b.RgameLevelidx,b.gametitleidx, b.gubunam, b.tryoutgamedate, b.tryoutgamestarttime, b.gameno, b.tryoutgameingS, b.gbidx, b.cda, b.cdc
+            ,b.RgameLevelidx,b.gametitleidx, b.gubunam, b.tryoutgamedate, b.tryoutgamestarttime, b.gameno, b.tryoutgameingS
             ,G1firstRC,G1korSin,G1gameSin,G1firstmemberSin,G2firstRC,G2KorSin,G2gameSin,G2firstmemberSin,a.itgubun
-            ,(SELECT count(*)  FROM sd_gameMember_roundRecord WHERE midx = a.gamememberidx AND gamecodeseq > 0 ) AS setCodeCount
+            ,(SELECT count(*)  FROM sd_gameMember_roundRecord WHERE midx = a.gamememberidx AND gamecodeseq > 0 ) AS setCodeCount,
+            CASE
+                WHEN (select gameMemberIDX  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected = 1) > 0
+                THEN (select username from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 1)
+                ELSE (select top 1 username from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 0 order by partnerIDX)
+            END as player1,
+            CASE
+                WHEN (select gameMemberIDX  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected = 1) > 0
+                THEN (select partnerIDX from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 1)
+                ELSE (select top 1 partnerIDX from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 0 order by partnerIDX)
+            END
+            as player1PartnerIDX,
+            CASE
+                WHEN (select gameMemberIDX  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected = 2) > 0
+                THEN (select username from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 2)
+                WHEN (select count(*)  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected in (1,2) ) = 0
+                THEN (select c.username from (select ROW_NUMBER() OVER (order by gameMemberIDX asc) as idx, username from SD_gameMember_partner
+                WHERE gamememberidx = a.gamememberidx and selected = 0) as c where c.idx = 2)
+                ELSE (select top 1 username from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 0 order by partnerIDX)
+            END as player2,
+            CASE
+                WHEN (select gameMemberIDX  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected = 2) > 0
+                THEN (select partnerIDX from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 2)
+                WHEN (select count(*)  from sd_gameMember_partner where gamememberidx = a.gamememberidx and selected in (1,2) ) = 0
+                THEN (select c.partnerIDX from (select ROW_NUMBER() OVER (order by gameMemberIDX asc) as idx, username, partnerIDX from SD_gameMember_partner
+                WHERE gamememberidx = a.gamememberidx and selected = 0) as c where c.idx = 2)
+                ELSE (select top 1 partnerIDX from SD_gameMember_partner where gamememberidx = a.gamememberidx and selected = 0 order by partnerIDX)
+            END
+        as player2PartnerIDX
         FROM SD_gameMember AS a
         INNER JOIN tblRGameLevel AS b
         ON a.gametitleidx = b.gametitleidx AND a.gbidx = b.gbidx AND a.delYN = 'N'
@@ -40,9 +54,18 @@
         FROM
             sd_gameMember_partner a, tblPlayer b
         WHERE
-            a.gameMemberIDX = #{gameMemberIdx} AND selected = 0 AND b.PlayerIDX = a.PlayerIDX
+            a.gameMemberIDX = #{gameMemberIdx} AND b.PlayerIDX = a.PlayerIDX
         ORDER BY
             a.partnerIDX ASC
+    </select>
+
+    <select id="getPartnerIdxCount" parameterType="map" resultType="integer">
+        SELECT
+            count(*)
+        FROM
+            sd_gameMember_partner
+        WHERE
+            gameMemberIDX = #{gameMemberIDX} AND selected = #{sort}
     </select>
 
     <select id="getPartnerIdx" parameterType="map" resultType="long">
@@ -54,15 +77,6 @@
             gameMemberIDX = #{gameMemberIDX} AND selected = #{sort}
     </select>
 
-    <update id="setPlayerSelected">
-        UPDATE
-            sd_gameMember_partner
-        SET
-            selected = 0
-        WHERE
-            partnerIDX = #{partnerIDX}
-    </update>
-
     <update id="setPlayerList" parameterType="map">
         UPDATE
             sd_gameMember_partner
@@ -72,5 +86,13 @@
             partnerIDX = #{partnerIDX};
     </update>
 
+    <update id="setPlayerSelected">
+        UPDATE
+        sd_gameMember_partner
+        SET
+        selected = 0
+        WHERE
+        partnerIDX = #{partnerIDX}
+    </update>
 
 </mapper>

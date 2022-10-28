@@ -77,11 +77,12 @@ public class DivingService {
 
         try {
             //기존에 선택 된 선수가 있는지 확인
-            Long originIdx = DivingMapper.getPartnerIdx(params);
-            log.info("[setPlayerList] originIdx : {}", originIdx);
+            int originIdxCount = DivingMapper.getPartnerIdxCount(params);
+            log.info("[setPlayerList] originIdx : {}", originIdxCount);
 
             //선택된 선수가 있다면 제거하고 새로운 선수를 등록
-            if(originIdx != null || originIdx > 0) {
+            if(originIdxCount > 0) {
+                Long originIdx = DivingMapper.getPartnerIdx(params);
                 DivingMapper.setPlayerSelected(originIdx);
             }
             result = DivingMapper.setPlayerList(params);

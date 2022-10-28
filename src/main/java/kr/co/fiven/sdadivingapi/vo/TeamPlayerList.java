@@ -4,9 +4,10 @@ import lombok.Data;
 
 @Data
 public class TeamPlayerList {
-    private String userName;
-    private String Birthday;
-    private int Sex;
-    private String CDBNM;
-    private int userClass;
+    private Long partneridx;
+    private String username;
+    private String birthday;
+    private int sex;
+    private String cdbnm;
+    private String userclass;
 }

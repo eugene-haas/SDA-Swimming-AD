@@ -11,6 +11,8 @@ import java.util.Map;
 public interface DivingMapper {
     public List<PlayerList> getPlayerList(Long gameLevelIdx);
     List<TeamPlayerList> getTeamPlayerList(Long gameMemberIdx);
+
+    int getPartnerIdxCount(Map<String, Integer> params);
     Long getPartnerIdx(Map<String, Integer> params);
     int setPlayerList(Map<String, Integer> params);
     void setPlayerSelected(Long originIdx);

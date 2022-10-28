@@ -4,10 +4,10 @@ spring:
       local : "local"
       dev : "dev"
       prod : "prod"
-    active : local
+    active : dev
 
 server:
-  port: 8081
+  port: 8083
   servlet:
     context-path: /
     encoding:
@@ -74,7 +74,7 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://172.30.1.7:1433;databaseName=KS_Swimming;useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:sqlserver://172.30.1.7:1433;DatabaseName=KS_Swimming;encrypt=true;trustServerCertificate=true;useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: splog_ekS1dlP9djT0fl
     password: slogp_#f(6+!2!j+g04*alN9kO3
 ---
@@ -84,7 +84,7 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://49.247.9.88:1433;databaseName=KS_Swimming;useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:sqlserver://49.247.9.88:1433;databaseName=KS_Swimming;encrypt=true;trustServerCertificate=true;useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: splog_ekS1dlP9djT0fl
     password: slogp_#f(6+!2!j+g04*alN9kO3
 
